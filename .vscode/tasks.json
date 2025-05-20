@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Backend Server",
+      "type": "shell",
+      "command": "./run.sh",
+      "args": ["back"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run React Frontend",
+      "type": "shell",
+      "command": "./run.sh",
+      "args": ["front"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Git: Add, Commit, and Push",
+      "type": "shell",
+      "command": "./git.sh",
+      "args": ["${input:commitMessage}"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "description": "Enter your commit message:",
+      "default": "Update",
+      "type": "promptString"
+    }
+  ]
+}
