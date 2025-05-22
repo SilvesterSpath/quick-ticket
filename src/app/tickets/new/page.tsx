@@ -1,12 +1,14 @@
-const NewTicketPage = () => {
-  const formAction = async (formData: FormData) => {
-    'use server';
-    const subject = formData.get('subject');
-    const description = formData.get('description');
-    const priority = formData.get('priority');
+'use client';
 
-    console.log(subject, description, priority);
-  };
+import { useActionState } from 'react';
+import { createTicket } from '@/actions/ticket.actions';
+
+const NewTicketPage = () => {
+  const [state, formAction] = useActionState(createTicket, {
+    success: false,
+    message: '',
+  });
+
   return (
     <div className='flex justify-center items-center min-h-screen bg-blue-50'>
       <div className='w-full max-w-md bg-white shadow-md rounded-lg p-8 border border-gray-200'>
