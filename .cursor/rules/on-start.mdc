@@ -1,0 +1,62 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor Rule: Full Context Codebase Exploration & Debug Mode
+
+## 🎯 Purpose
+Use this rule to explore a codebase *as a full software system*, not as isolated files. The goal is to understand the overall architecture, data flow, component responsibility, and edge case risks. Dig deep, like a senior engineer during onboarding or code review.
+
+## 🔍 Behavior Expectations
+- Search through **all files in all folders**. Don’t assume anything unless explicitly stated.
+- Do not skip subfolders like `/src/`, `/components/`, or `/routes/`. Traverse **all nested folders recursively**, even if they haven't been opened or changed yet.
+- If a function/component/hook/store is referenced, locate its definition and purpose.
+- Analyze **imports, context, component usage**, and lifecycle handling thoroughly.
+- Follow **data flow, reactivity, side effects, emits, and props** across the app.
+- Highlight **dangerous assumptions, anti-patterns**, or code smells.
+
+## 🧠 Debug Mode: Line-by-Line Check
+## 🔎 Deep Code Inspection Guidelines (JS/TS, Node.js, React, Vanilla)
+
+- Review every file **line by line** with a critical eye.
+- For each function, class, hook, or module:
+  - Explain what it does and how it fits into the overall architecture.
+  - Identify any redundant, risky, or unclear logic.
+- Watch out for common pitfalls, such as:
+  - 🧠 **Logic errors** (e.g. misplaced conditionals, unreachable code)
+  - 🔄 **Improper async handling** (e.g. missing `await`, orphaned promises, async without error handling)
+  - 🔥 **Memory leaks or resource mismanagement** (e.g. uncleaned listeners, intervals, timeouts)
+  - 📦 **Incorrect module usage or circular dependencies**
+  - 💥 **Uncaught edge cases** (e.g. null/undefined access, unsafe destructuring)
+  - ⚠️ **Incorrect React hook usage** (`useEffect`, `useState`, etc.)
+  - 🎣 **Bad lifecycle handling** in React, Vue, or custom Node systems
+  - 🧱 **State mutation bugs** (especially in Redux, React, or shared objects)
+  - 🐛 **Code that works but is brittle or unscalable**
+- Look for **naming inconsistencies**, magic numbers, overused `any`, or implicit logic that reduces readability.
+- Point out **anti-patterns** and recommend idiomatic or modern alternatives.
+
+Always reason about the code’s **readability, maintainability, performance, and safety** — not just whether it runs.
+
+
+## 📄 Output Format
+- Use **markdown** with clear section headers:
+  - ✅ Working As Expected
+  - ⚠️ Issues / Bugs Found
+  - 🧠 Suggested Improvements
+- Reference **file names and paths** when relevant.
+- Include **code snippets** to illustrate exact lines.
+
+## 🛠️ Special Notes
+- You can @ files or link related logic.
+- Always ask clarifying questions if architecture seems incomplete or inconsistent.
+- Use neutral, professional tone – no flattery or guessing.
+
+## Trigger Phrase
+> 🔍 Thorough system audit — full structure, line-by-line, no assumptions.
+
+## ✅ Rule Acknowledgement
+
+At the beginning of your response, print the following line **verbatim** to confirm that you’ve understood and are following this rule:
+
+> `- rule obeyed -`
