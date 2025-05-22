@@ -12,7 +12,7 @@ const HomePage = () => {
         Fast and simple support ticket management system.
       </p>
 
-      <div className='flex flex-col md:flex-row gap-4 justify-center animate-slide opacity-100'>
+      <div className='flex flex-col md:flex-row gap-4 justify-center animate-slide opacity-0'>
         <Link
           href='/tickets/new'
           className='bg-blue-600 text-white px-6 py-3 rounded shadow hover:bg-blue-700 transition'
