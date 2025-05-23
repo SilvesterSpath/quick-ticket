@@ -1,7 +1,7 @@
 'use server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/db/prisma';
 import { revalidatePath } from 'next/cache';
+import { logEvent } from '@/utils/sentry';
 
 export const createTicket = async (
   prevState: { success: boolean; message: string },
@@ -15,8 +15,14 @@ export const createTicket = async (
     const priority = formData.get('priority') as string;
 
     if (!subject || !description || !priority) {
-      Sentry.captureMessage(
-        'Validation Error: Missing required fields',
+      logEvent(
+        'Validation Error: Missing data fields',
+        'ticket',
+        {
+          subject,
+          description,
+          priority,
+        },
         'warning'
       );
       return {
@@ -33,13 +39,14 @@ export const createTicket = async (
       },
     });
 
-    Sentry.addBreadcrumb({
-      category: 'ticket.create',
-      message: `Ticket created: ${ticket.id}`,
-      level: 'info',
-    });
-
-    Sentry.captureMessage(`Ticket created successfully: ${ticket.id}`, 'info');
+    logEvent(
+      `Ticket created successfully: ${ticket.id}`,
+      'ticket',
+      {
+        ticketId: ticket.id,
+      },
+      'info'
+    );
 
     revalidatePath('/tickets');
 
@@ -48,9 +55,15 @@ export const createTicket = async (
       message: 'Ticket created successfully',
     };
   } catch (error) {
-    Sentry.captureException(error as Error, {
-      extra: { formData: Object.fromEntries(formData.entries()) },
-    });
+    logEvent(
+      'An error occured while creating the ticket',
+      'ticket',
+      {
+        formData: Object.fromEntries(formData.entries()),
+      },
+      'error',
+      error
+    );
     return {
       success: false,
       message: 'Error occurred while creating ticket',
