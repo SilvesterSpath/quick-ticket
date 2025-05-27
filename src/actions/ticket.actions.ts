@@ -70,3 +70,25 @@ export const createTicket = async (
     };
   }
 };
+
+export const getTickets = async () => {
+  try {
+    const tickets = await prisma.ticket.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    logEvent(
+      'Tickets fetched successfully',
+      'ticket',
+      {
+        count: tickets.length,
+      },
+      'info'
+    );
+    return tickets;
+  } catch (error) {
+    logEvent('Error fetching tickets', 'ticket', {}, 'error', error);
+    return [];
+  }
+};
