@@ -144,7 +144,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\saját\\mystuff_e\\2025\\quick-ticket\\src\\generated\\prisma",
+      "value": "C:\\mystuff_c\\2025\\quick-ticket\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -158,7 +158,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\saját\\mystuff_e\\2025\\quick-ticket\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\mystuff_c\\2025\\quick-ticket\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
