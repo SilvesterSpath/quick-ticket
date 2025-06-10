@@ -64,7 +64,16 @@ export const registerUser = async (
     logEvent('User registered successfully', 'auth', { email }, 'info');
     return { success: true, message: 'User registered successfully' };
   } catch (error) {
-    logEvent('Error: Register user', 'auth', {}, 'error', error);
-    return { success: false, message: 'Something went wrong' };
+    logEvent(
+      'Unexpected error during registration',
+      'auth',
+      {},
+      'error',
+      error
+    );
+    return {
+      success: false,
+      message: 'Something went wrong, please try again',
+    };
   }
 };
