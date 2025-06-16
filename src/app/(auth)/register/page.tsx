@@ -10,6 +10,17 @@ const RegisterPage = () => {
     message: '',
   };
   const [state, formAction] = useActionState(registerUser, initalState);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success(state.message);
+      router.push('/tickets');
+      router.refresh();
+    } else if (state.message) {
+      toast.error(state.message);
+    }
+  }, [state, router]);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-blue-50 px-4'>
