@@ -17,11 +17,18 @@ export async function getCurrentUser() {
       where: {
         id: payload.userId,
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      },
     });
+
     if (!user) return null;
+
     return user;
   } catch (error) {
-    console.error(error);
+    console.log('Error getting current user', error);
     return null;
   }
 }
