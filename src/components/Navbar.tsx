@@ -1,14 +1,12 @@
-'use client';
-
 import Link from 'next/link';
+import { getCurrentUser } from '@/lib/current-user';
 import LogoutButton from './LogoutButton';
-import { useState } from 'react';
 
-const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+const Navbar = async () => {
+  const user = await getCurrentUser();
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleLogout = async () => {
+    console.log('logout');
   };
 
   return (
@@ -19,7 +17,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className='flex items-center space-x-4'>
-        {isLoggedIn ? (
+        {user ? (
           <>
             <Link
               href='/tickets/new'
