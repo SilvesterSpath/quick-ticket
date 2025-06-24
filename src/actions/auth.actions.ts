@@ -95,3 +95,64 @@ export async function logoutUser(): Promise<{
     };
   }
 }
+
+// log user in
+export async function loginUser(
+  prevState: ResponseResult,
+  formData: FormData
+): Promise<ResponseResult> {
+  try {
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    if (!email || !password) {
+      logEvent(
+        'Validation Error: Missing data fields',
+        'auth',
+        {
+          email,
+        },
+        'warning'
+      );
+      return { success: false, message: 'All fields are required' };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user || !user.password) {
+      logEvent(`Error: User not found: ${email}`, 'auth', { email }, 'warning');
+      return { success: false, message: 'Invalid credentials' };
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      logEvent(
+        `Error: Invalid password for user: ${email}`,
+        'auth',
+        {
+          email,
+        },
+        'warning'
+      );
+      return { success: false, message: 'Invalid credentials' };
+    }
+
+    const token = await signAuthToken({
+      userId: user.id,
+      email,
+    });
+    await setAuthCookie(token);
+
+    logEvent('User logged in successfully', 'auth', { email }, 'info');
+    return { success: true, message: 'User logged in successfully' };
+  } catch (error) {
+    logEvent('Unexpected error during login', 'auth', {}, 'error', error);
+    return {
+      success: false,
+      message: 'Something went wrong, please try again',
+    };
+  }
+}
