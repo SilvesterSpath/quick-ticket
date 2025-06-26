@@ -142,3 +142,63 @@ export const getTicketById = async (id: string) => {
     return null;
   }
 };
+
+// Close ticket
+export const closeTicket = async (
+  prevState: { success: boolean; message: string },
+  formData: FormData
+): Promise<{ success: boolean; message: string }> => {
+  const ticketId = Number(formData.get('ticketId'));
+
+  try {
+    if (!ticketId) {
+      logEvent('Validation Error: Missing ticket ID', 'ticket', {}, 'warning');
+      return {
+        success: false,
+        message: 'Ticket ID is required',
+      };
+    }
+
+    const user = await getCurrentUser();
+    if (!user) {
+      logEvent('Unauthorized access', 'ticket', {}, 'warning');
+      return {
+        success: false,
+        message: 'You must be logged in to close a ticket',
+      };
+    }
+
+    const ticket = await prisma.ticket.findUnique({
+      where: { id: ticketId },
+    });
+
+    if (!ticket || ticket.userId !== user.id) {
+      logEvent('Unauthorized access', 'ticket', {}, 'warning');
+      return {
+        success: false,
+        message: 'You are not authorized to close this ticket',
+      };
+    }
+
+    await prisma.ticket.update({
+      where: { id: ticketId },
+      data: {
+        status: 'Closed',
+      },
+    });
+
+    logEvent('Ticket closed successfully', 'ticket', { ticketId }, 'info');
+    revalidatePath('/tickets');
+
+    return {
+      success: true,
+      message: 'Ticket closed successfully',
+    };
+  } catch (error) {
+    logEvent('Error closing ticket', 'ticket', { ticketId }, 'error', error);
+    return {
+      success: false,
+      message: 'Error occurred while closing ticket',
+    };
+  }
+};
