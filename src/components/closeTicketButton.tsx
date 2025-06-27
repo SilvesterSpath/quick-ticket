@@ -4,7 +4,7 @@ import { useActionState, useEffect } from 'react';
 import { closeTicket } from '@/actions/ticket.actions';
 import { toast } from 'sonner';
 
-const closeTicketButton = ({
+const CloseTicketButton = ({
   ticketId,
   isClosed,
 }: {
@@ -37,4 +37,4 @@ const closeTicketButton = ({
   );
 };
 
-export default closeTicketButton;
+export default CloseTicketButton;
