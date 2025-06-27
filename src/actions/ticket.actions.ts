@@ -188,7 +188,8 @@ export const closeTicket = async (
     });
 
     logEvent('Ticket closed successfully', 'ticket', { ticketId }, 'info');
-    revalidatePath('/tickets');
+    revalidatePath('/tickets'); // refresh cache
+    revalidatePath(`/tickets/${ticketId}`);
 
     return {
       success: true,
